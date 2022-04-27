@@ -10,6 +10,8 @@ import { CircularProgress } from "@mui/material";
 import { ToastContainer } from "react-bootstrap";
 import { Authentication } from "../components/auth/Authentication";
 import { Test } from "../components/Test";
+import { Dashboard } from "../components/dashboard/Dashboard";
+import { ULTDetail } from "../components/dashboard/ULTDetail";
 
 export const AppRouter = () => {
 	const dispatch = useDispatch();
@@ -55,6 +57,8 @@ export const AppRouter = () => {
 					{/* Public Routes */}
 					<Route path="/" element={<PrivateRoute isAuthenticated={isLoggedIn} />}>
 						<Route exact path="/" element={<Test />} />
+						<Route exact path="/dashboard" element={<Dashboard />} />
+						<Route exact path="/ult-detail/:ultId" element={<ULTDetail />} />
 						<Route path="*" element={<Navigate to="/" />} />
 					</Route>
 

@@ -6,6 +6,9 @@ import {
     createUserWithEmailAndPassword,
 } from 'firebase/auth';
 import { app } from "../firebase/firebase-config";
+import { toastSW } from "../helpers/sweetAlert2";
+import { cleanMessage } from "../helpers/helpers";
+import { createUser } from "./user";
 
 const auth = getAuth(app);
 
@@ -24,8 +27,9 @@ export const logout = () => ({
 export const startLogout = () => {
     return (dispatch) => {
         dispatch(logout());
-        signOut(auth);
-        console.log('Me salí');
+        signOut(auth)
+            .then(() => toastSW('success', 'Auf wiedersehen!'))
+            .catch((error) => toastSW('error', cleanMessage(error)));
     };
 };
 
@@ -33,24 +37,26 @@ export const startLoginEmailPassword = (email, password) => {
     return (dispatch) => {
         signInWithEmailAndPassword(auth, email, password)
             .then(({ user }) => {
-                console.log("¡Bienvenido!");
                 dispatch(login(user.uid, user.displayName));
+                toastSW('success', '¡Bienvenido!');
             })
             .catch((error) => {
                 console.log('[Auth] Login ', error);
+                toastSW('error', cleanMessage(error));
             })
     };
 };
 
-export const startRegisterWithEmailPasswordName = (email, password) => {
+export const startRegisterWithEmailPasswordName = (email, password, name) => {
     return (dispatch) => {
         createUserWithEmailAndPassword(auth, email, password)
             .then(({ user }) => {
-                console.log("¡Registrado!");
                 dispatch(login(user.uid, user.displayName));
+                dispatch(createUser(user.uid, name, email));
+                // toastSW('success', '¡Registrado!');
             })
             .catch((error) => {
-                console.log('[Auth] Register ', error);
+                toastSW('error', cleanMessage(error));
             });
     };
 };

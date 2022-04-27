@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { startLoginEmailPassword, startLogout, startRegisterWithEmailPasswordName } from '../actions/auth';
+import { toastSW } from '../helpers/sweetAlert2';
 
 export const Test = () => {
     const dispatch = useDispatch();
@@ -9,7 +10,8 @@ export const Test = () => {
     const [name, setName] = useState('');
 
     const btnRegister = () => {
-        dispatch(startRegisterWithEmailPasswordName(email, password, name));
+        // dispatch(startRegisterWithEmailPasswordName(email, password, name));
+        toastSW('success', 'Testing..');
     };
 
     const btnLogin = () => {
