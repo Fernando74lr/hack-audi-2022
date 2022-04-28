@@ -7,19 +7,21 @@ import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import Badge from '@mui/material/Badge';
+import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar from '@mui/material/AppBar';
 import { useState } from "react";
-import { mainListItems, secondaryListItems } from "../components/dashboard/ListItems";
-import { useSelector } from "react-redux";
+import { mainListItems } from "../components/dashboard/ListItems";
+import { useDispatch, useSelector } from "react-redux";
+import { startLogout } from "../actions/auth";
+import audiLogoImg from '../assets/img/auth/audi-logo-sidebar.jpg'
 
 export const PrivateRoute = ({ isAuthenticated }) => {
     const drawerWidth = 240;
     const { page } = useSelector(state => state);
+    const dispatch = useDispatch();
 
     const AppBar = styled(MuiAppBar, {
         shouldForwardProp: (prop) => prop !== 'open',
@@ -87,6 +89,10 @@ export const PrivateRoute = ({ isAuthenticated }) => {
         setOpen(!open);
     };
 
+    const handleLogout = () => {
+        dispatch(startLogout());
+    }
+
     return (<>
         <ThemeProvider theme={mdTheme}>
             <Box sx={{ display: 'flex' }}>
@@ -120,11 +126,9 @@ export const PrivateRoute = ({ isAuthenticated }) => {
                         >
                             {page}
                         </Typography>
-                        {/* <IconButton color="inherit">
-                            <Badge badgeContent={4} color="secondary">
-                                <NotificationsIcon />
-                            </Badge>
-                        </IconButton> */}
+                        <IconButton color="inherit" onClick={handleLogout}>
+                            <LogoutIcon />
+                        </IconButton>
                     </Toolbar>
                 </AppBar>
                 <Drawer variant="permanent" open={open}>
@@ -136,6 +140,15 @@ export const PrivateRoute = ({ isAuthenticated }) => {
                             px: [1],
                         }}
                     >
+                        <img
+                            src={audiLogoImg}
+                            alt="logo-audi"
+                            style={{
+                                width: '150px',
+                                height: '80px',
+                                margin: '15px auto'
+                            }}
+                        />
                         <IconButton onClick={toggleDrawer}>
                             <ChevronLeftIcon />
                         </IconButton>
@@ -160,7 +173,7 @@ export const PrivateRoute = ({ isAuthenticated }) => {
                     }}
                 >
                     <Toolbar />
-                    {isAuthenticated ? <Outlet /> : <Navigate to="/auth/inicio-de-sesion" />}
+                    {isAuthenticated ? <Outlet /> : <Navigate to="/auth" />}
                 </Box>
             </Box>
         </ThemeProvider>

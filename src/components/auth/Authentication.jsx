@@ -58,7 +58,7 @@ export const Authentication = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
-    const [isLogin, setIsLogin] = useState(false);
+    const [isLogin, setIsLogin] = useState(true);
 
     const btnRegister = () => {
         dispatch(startRegisterWithEmailPasswordName(email, password, name));

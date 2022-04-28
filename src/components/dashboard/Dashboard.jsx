@@ -1,60 +1,18 @@
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import { DataGrid, GridToolbar, esES } from '@mui/x-data-grid';
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { ULTS } from '../../helpers/ults';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentPage } from '../../actions/page';
+import { useEffect, useState } from 'react';
+import { Button } from '@mui/material';
+import { DialogFormSmall } from '../forms/DialogFormSmall';
+import { getOrders } from '../../actions/order';
 
-const generateRows = (ults) => {
-    const rows = [];
-    ults.forEach((ult) => {
-        rows.push({
-            id: ult["Part Number"],
-            col1: ult["Part Number"],
-            col2: ult["PN with Index"],
-            col3: ult["Description"],
-            col4: ult["Pieces / Car"],
-            col5: ult["EBR"],
-            col6: ult["Cars / Day"],
-            col7: ult["DUNS"],
-            col8: ult["Supplier (text)"],
-            col9: ult["Land"],
-            col10: ult["Zip Code"],
-            col11: ult["City"],
-            col12: ult["LT Type / Project"],
-            col13: ult["LT"],
-            col14: ult["Qty KLT/SLT per Pallet"],
-            col15: ult["QTY PN per Container"],
-            col16: ult["Containers needed considering Pzs/Car, EBR & Cars/Day"],
-            col17: ult["Gebinde"],
-            col18: ult["PN per Pallet"],
-            col19: ult["Pallet"],
-            col20: ult["Top"],
-            col21: ult["SubZone"],
-            col22: ult["FTL / LTL"],
-            col23: ult["Pick Up Frecuency (each X day)"],
-            col24: ult["Transport (Vollgut)"],
-            col25: ult["Transport (Leergut)"],
-            col26: ult["Supplier (number)"],
-            col27: ult["Inhouse"],
-            col28: ult["Trailer Yard"],
-            col29: ult["WH Vollgut"],
-            col30: ult["WH Leergut"],
-            col31: ult["ULT"],
-            col32: ult["Containers Soll"],
-            col33: ult["Containers considering Gebinde Round Up"],
-            col34: ult["Gebinden (pallets + tops)"],
-            col35: ult["Total Gebinden"],
-            col36: ult["Total Containers"],
-        });
-    });
-
-    return rows;
-};
 
 function Copyright(props) {
     return (
@@ -112,9 +70,79 @@ const columns = [
 export const Dashboard = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const { orders } = useSelector(state => state);
     dispatch(setCurrentPage('Dashboard'));
+
+    const [open, setOpen] = useState(false);
+
+    useEffect(() => {
+        dispatch(getOrders());
+    }, [dispatch])
+
+
+    const generateRows = () => {
+        const rows = [];
+        const flag = (orders?.length > 0);
+        const array = flag ? orders : ULTS
+        array.forEach((ult, i) => {
+            rows.push({
+                id: flag ? `${ult.partNumber}-${i}` : ult["Part Number"],
+                col1: flag ? ult.partNumber : ult["Part Number"],
+                col2: flag ? ult.pnWithIndex : ult["PN with Index"],
+                col3: flag ? ult.description : ult["Description"],
+                col4: flag ? ult.piecesPerCar : ult["Pieces / Car"],
+                col5: flag ? ult.ebr : ult["EBR"],
+                col6: flag ? ult.carsPerDay : ult["Cars / Day"],
+                col7: flag ? ult.duns : ult["DUNS"],
+                col8: flag ? ult.supplierText : ult["Supplier (text)"],
+                col9: flag ? ult.land : ult["Land"],
+                col10: flag ? ult.zipCode : ult["Zip Code"],
+                col11: flag ? ult.city : ult["City"],
+                col12: flag ? ult.ltTypePerProject : ult["LT Type / Project"],
+                col13: flag ? ult.lt : ult["LT"],
+                col14: flag ? ult.kltPerSlt : ult["Qty KLT/SLT per Pallet"],
+                col15: flag ? ult.pnPerContainer : ult["QTY PN per Container"],
+                col16: flag ? ult.containersNeeded : ult["Containers needed considering Pzs/Car, EBR & Cars/Day"],
+                col17: flag ? ult.gebinde : ult["Gebinde"],
+                col18: flag ? ult.pnPerPallet : ult["PN per Pallet"],
+                col19: flag ? ult.pallet : ult["Pallet"],
+                col20: flag ? ult.top : ult["Top"],
+                col21: flag ? ult.subzone : ult["SubZone"],
+                col22: flag ? ult.FTLOrLTL : ult["FTL / LTL"],
+                col23: flag ? ult.pickUpFrequency : ult["Pick Up Frecuency (each X day)"],
+                col24: flag ? ult.transportVollgut : ult["Transport (Vollgut)"],
+                col25: flag ? ult.transportLeergut : ult["Transport (Leergut)"],
+                col26: flag ? ult.supplier : ult["Supplier (number)"],
+                col27: flag ? ult.inhouse : ult["Inhouse"],
+                col28: flag ? ult.trailerYard : ult["Trailer Yard"],
+                col29: flag ? ult.whVollgut : ult["WH Vollgut"],
+                col30: flag ? ult.whLeergut : ult["WH Leergut"],
+                col31: flag ? ult.ULT : ult["ULT"],
+                col32: flag ? ult.containerSoll : ult["Containers Soll"],
+                col33: flag ? ult.containersConsideringGebinde : ult["Containers considering Gebinde Round Up"],
+                col34: flag ? ult.gebindenPalletsAndTops : ult["Gebinden (pallets + tops)"],
+                col35: flag ? ult.totalGebinden : ult["Total Gebinden"],
+                col36: flag ? ult.totalContainers : ult["Total Containers"],
+            });
+        });
+
+        return rows;
+    };
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
     return (
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            <DialogFormSmall
+                open={open}
+                handleClose={handleClose}
+            />
             <Grid container spacing={3}>
                 {/* Chart */}
                 {/* <Grid item xs={12} md={8} lg={9}>
@@ -144,15 +172,21 @@ export const Dashboard = () => {
                             </Grid> */}
                 {/* Recent Orders */}
                 <Grid item xs={12}>
-                    <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                    <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                        {/* Buttons */}
+                        <Grid sx={{ mt: 3, mb: 3, width: '95%' }}>
+                            <Grid item xs={12}>
+                                <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+                                    Create new order
+                                </Button>
+                            </Grid>
+                        </Grid>
                         {/* <Orders /> */}
                         <div style={{ height: 400, width: '95%' }}>
                             <DataGrid
-                                // {...data}
-                                rows={generateRows(ULTS)} columns={columns}
+                                rows={generateRows()} columns={columns}
                                 components={{ Toolbar: GridToolbar }}
-                                localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-                                onRowDoubleClick={({ id }) => navigate(`/ult-detail/${id}`)}
+                                onRowDoubleClick={({ id }) => navigate(`/ult-detail/${id.split('-')[0]}`)}
                             />
                         </div>
                     </Paper>

@@ -31,7 +31,7 @@ export const startLogout = () => {
         dispatch(cleanUser());
         dispatch(cleanOrders());
         signOut(auth)
-            .then(() => toastSW('success', 'Auf wiedersehen!'))
+            .then(() => console.log('success', 'Auf wiedersehen!'))
             .catch((error) => toastSW('error', cleanMessage(error)));
     };
 };
@@ -41,7 +41,7 @@ export const startLoginEmailPassword = (email, password) => {
         signInWithEmailAndPassword(auth, email, password)
             .then(({ user }) => {
                 dispatch(login(user.uid, user.displayName));
-                toastSW('success', '¡Bienvenido!');
+                toastSW('success', 'Welcome!');
             })
             .catch((error) => {
                 console.log('[Auth] Login ', error);

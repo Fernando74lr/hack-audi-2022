@@ -19,7 +19,7 @@ export const mainListItems = (
             </ListItemIcon>
             <ListItemText primary="Dashboard" />
         </ListItemButton>
-        <ListItemButton
+        {/* <ListItemButton
             component={Link}
             to="/new-item"
         >
@@ -27,7 +27,7 @@ export const mainListItems = (
                 <AddIcon />
             </ListItemIcon>
             <ListItemText primary="New item" />
-        </ListItemButton>
+        </ListItemButton> */}
     </React.Fragment>
 );
 

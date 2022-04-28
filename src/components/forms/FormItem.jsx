@@ -1,15 +1,16 @@
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import { ULTS } from '../../helpers/ults';
-import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setCurrentPage } from '../../actions/page';
-import { Autocomplete, Button, TextField } from '@mui/material';
+import { Alert, AlertTitle, Autocomplete, Button, Divider, TextField } from '@mui/material';
 import { useState } from 'react';
 import { ZIPS } from '../../helpers/zips';
 // import { SUBZONES } from '../../helpers/subzones';
 import { toastSW } from '../../helpers/sweetAlert2';
-import { createOrder } from '../../actions/order';
+import { createOrder, getOrders } from '../../actions/order';
+import useWindowDimensions from '../../hooks/useWindowDimensions';
+import Typography from '@mui/material/Typography';
 
 const partNumberComponent = (params) => (
     <TextField
@@ -24,9 +25,10 @@ const partNumberComponent = (params) => (
 );
 
 export const FormItem = () => {
+    const { width } = useWindowDimensions();
     const dispatch = useDispatch();
-    dispatch(setCurrentPage('Form'));
 
+    const [order, setOrder] = useState(null);
     const [partNumber, setPartNumber] = useState(null);
     const [piecesPerCar, setPiecesPerCar] = useState('');
     const [ebr, setEBR] = useState('');
@@ -54,6 +56,16 @@ export const FormItem = () => {
 
     const notE = (text) => text?.length > 0;
 
+    const resetForm = () => {
+        setPartNumber(null);
+        setPiecesPerCar('');
+        setEBR('');
+        setCarsPerDay('');
+        setKltPerSlt('');
+        setPnPerContainer('');
+        setZip('');
+    };
+
     const calculateContainers = () => {
         const zipCode = calculateZip();
         const FTLOrLTL = getFTLOrLTL(zipCode.Zone);
@@ -72,7 +84,7 @@ export const FormItem = () => {
         const containersConsideringGebinde = Math.ceil(containerSoll / kltPerSlt) * kltPerSlt;
         const gebindenPalletsAndTops = containersConsideringGebinde / kltPerSlt;
         const totalGebinden = getTotalGebinden(gebindenPalletsAndTops);
-        const order = {
+        const newOrder = {
             partNumber: partNumber,
             pnWithIndex: partNumber,
             description: '',
@@ -110,15 +122,21 @@ export const FormItem = () => {
             totalGebinden: totalGebinden,
             totalContainers: totalGebinden * kltPerSlt,
         };
-        dispatch(createOrder(order));
+        resetForm();
+        dispatch(createOrder(newOrder));
+        dispatch(getOrders());
+        setOrder(newOrder);
     };
 
     return (
-        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <h1>New item form</h1>
-            <Grid container spacing={3}>
-                <Grid item xs={3}>
+        <Container maxWidth="lg" sx={{ mt: 1, mb: 1 }}>
+            <Typography gutterBottom>
+                Fill the form with the <b>input data required</b> to calculate the number of containers.
+            </Typography>
+            <Grid container spacing={(width < 680) ? 0 : 3}>
+                <Grid item xs={(width < 680) ? 12 : 4}>
                     <Autocomplete
+                        value={partNumber}
                         name="state"
                         onChange={(e, value) => setPartNumber(value)}
                         disablePortal
@@ -126,7 +144,7 @@ export const FormItem = () => {
                         renderInput={(params) => partNumberComponent(params)}
                     />
                 </Grid>
-                <Grid item xs={3}>
+                <Grid item xs={(width < 680) ? 12 : 4}>
                     <TextField
                         margin="normal"
                         required
@@ -139,7 +157,7 @@ export const FormItem = () => {
                         onChange={({ target }) => setPiecesPerCar(target.value)}
                     />
                 </Grid>
-                <Grid item xs={3}>
+                <Grid item xs={(width < 680) ? 12 : 4}>
                     <TextField
                         margin="normal"
                         required
@@ -152,7 +170,7 @@ export const FormItem = () => {
                         onChange={({ target }) => setEBR(target.value)}
                     />
                 </Grid>
-                <Grid item xs={3}>
+                <Grid item xs={(width < 680) ? 12 : 4}>
                     <TextField
                         margin="normal"
                         required
@@ -165,7 +183,7 @@ export const FormItem = () => {
                         onChange={({ target }) => setCarsPerDay(target.value)}
                     />
                 </Grid>
-                <Grid item xs={3}>
+                <Grid item xs={(width < 680) ? 12 : 4}>
                     <TextField
                         margin="normal"
                         required
@@ -178,7 +196,7 @@ export const FormItem = () => {
                         onChange={({ target }) => setKltPerSlt(target.value)}
                     />
                 </Grid>
-                <Grid item xs={3}>
+                <Grid item xs={(width < 680) ? 12 : 4}>
                     <TextField
                         margin="normal"
                         required
@@ -191,7 +209,7 @@ export const FormItem = () => {
                         onChange={({ target }) => setPnPerContainer(target.value)}
                     />
                 </Grid>
-                <Grid item xs={3}>
+                <Grid item xs={(width < 680) ? 12 : 4}>
                     <TextField
                         margin="normal"
                         required
@@ -206,16 +224,46 @@ export const FormItem = () => {
                 </Grid>
                 <Grid
                     item
-                    xs={3}
+                    xs={12}
+                    className="fw"
+                >
+                    {
+                        (order) && (<>
+                            <Alert severity="success">
+                                <AlertTitle><b>Total Containers:</b> {order.totalContainers}</AlertTitle>
+                                <AlertTitle><b>Total Gebinden:</b> {order.totalGebinden}</AlertTitle>
+                            </Alert>
+                        </>)
+                    }
+                    <Divider variant="middle" />
+                </Grid>
+                <Grid
+                    item
+                    xs={12}
                     style={{
                         display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center'
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
                     }}
                 >
+                    {
+                        (order) && (
+                            <Button
+                                variant="outlined"
+                                color="warning"
+                                sx={{ mr: 2 }}
+                                onClick={() => {
+                                    resetForm();
+                                    setOrder(null);
+                                }}
+                            >
+                                Clean
+                            </Button>
+                        )
+                    }
                     <Button
                         variant="outlined"
-                        color="red-audi"
+                        color="success"
                         onClick={() => {
                             if (notE(partNumber) && notE(piecesPerCar) && notE(ebr) && notE(carsPerDay) && notE(kltPerSlt) && notE(pnPerContainer) && notE(zip)) {
                                 calculateContainers();
@@ -224,7 +272,7 @@ export const FormItem = () => {
                             }
                         }}
                     >
-                        Calculate
+                        Calculate & Save
                     </Button>
                 </Grid>
             </Grid>
