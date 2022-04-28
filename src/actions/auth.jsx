@@ -8,7 +8,8 @@ import {
 import { app } from "../firebase/firebase-config";
 import { toastSW } from "../helpers/sweetAlert2";
 import { cleanMessage } from "../helpers/helpers";
-import { createUser } from "./user";
+import { cleanUser, createUser } from "./user";
+import { cleanOrders } from "./order";
 
 const auth = getAuth(app);
 
@@ -27,6 +28,8 @@ export const logout = () => ({
 export const startLogout = () => {
     return (dispatch) => {
         dispatch(logout());
+        dispatch(cleanUser());
+        dispatch(cleanOrders());
         signOut(auth)
             .then(() => toastSW('success', 'Auf wiedersehen!'))
             .catch((error) => toastSW('error', cleanMessage(error)));

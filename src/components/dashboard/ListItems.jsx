@@ -5,6 +5,7 @@ import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import AddIcon from '@mui/icons-material/Add';
 import { Link } from 'react-router-dom';
 
 export const mainListItems = (
@@ -17,6 +18,15 @@ export const mainListItems = (
                 <DashboardIcon />
             </ListItemIcon>
             <ListItemText primary="Dashboard" />
+        </ListItemButton>
+        <ListItemButton
+            component={Link}
+            to="/new-item"
+        >
+            <ListItemIcon>
+                <AddIcon />
+            </ListItemIcon>
+            <ListItemText primary="New item" />
         </ListItemButton>
     </React.Fragment>
 );

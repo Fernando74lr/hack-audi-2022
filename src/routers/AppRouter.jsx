@@ -12,6 +12,8 @@ import { Authentication } from "../components/auth/Authentication";
 import { Test } from "../components/Test";
 import { Dashboard } from "../components/dashboard/Dashboard";
 import { ULTDetail } from "../components/dashboard/ULTDetail";
+import { FormItem } from "../components/forms/FormItem";
+import { getUserInfo } from "../actions/user";
 
 export const AppRouter = () => {
 	const dispatch = useDispatch();
@@ -24,12 +26,10 @@ export const AppRouter = () => {
 			if (user?.uid) {
 				dispatch(login(user.uid, user.displayName));
 				setIsLoggedIn(true);
-				// dispatch(userInfo(await getUserInfo(user?.uid)));
-				// dispatch(getConsults());
+				dispatch(getUserInfo(user.uid));
 			} else {
 				setIsLoggedIn(false);
 			}
-
 			setsChecking(false);
 		})
 		console.log('App Router');
@@ -48,23 +48,18 @@ export const AppRouter = () => {
 			<Fragment>
 				<ToastContainer />
 				<Routes>
-					{/* Private */}
-					{/* <Route exact path="/" element={<PrivateRoute isAuthenticated={isLoggedIn} />}>
-						<Route exact path="/" element={<DashboardSummary summary />} />
-						<Route path="*" element={<Navigate to="/" />} />
-					</Route> */}
-
 					{/* Public Routes */}
 					<Route path="/" element={<PrivateRoute isAuthenticated={isLoggedIn} />}>
-						<Route exact path="/" element={<Test />} />
-						<Route exact path="/dashboard" element={<Dashboard />} />
+						<Route exact path="/" element={<Dashboard />} />
+						<Route exact path="/test" element={<Test />} />
+						<Route exact path="/new-item" element={<FormItem />} />
 						<Route exact path="/ult-detail/:ultId" element={<ULTDetail />} />
 						<Route path="*" element={<Navigate to="/" />} />
 					</Route>
 
 					{/* Authentication */}
 					<Route path="/auth" element={<PublicRoute isAuthenticated={isLoggedIn} />}>
-						<Route exact path="/auth/inicio-de-sesion" element={<Authentication />} />
+						<Route exact path="/auth" element={<Authentication />} />
 						<Route path="*" element={<Navigate to="/" />} />
 					</Route>
 
