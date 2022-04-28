@@ -12,6 +12,8 @@ import { useEffect, useState } from 'react';
 import { Button } from '@mui/material';
 import { DialogFormSmall } from '../forms/DialogFormSmall';
 import { getOrders } from '../../actions/order';
+import { ScannerDialog } from '../scanner/ScannerDialog';
+import { Chart } from './Chart';
 
 
 function Copyright(props) {
@@ -71,14 +73,14 @@ export const Dashboard = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { orders } = useSelector(state => state);
-    dispatch(setCurrentPage('Dashboard'));
+    // dispatch(setCurrentPage('Dashboard'));
 
     const [open, setOpen] = useState(false);
+    const [open2, setOpen2] = useState(false);
 
     useEffect(() => {
         dispatch(getOrders());
     }, [dispatch])
-
 
     const generateRows = () => {
         const rows = [];
@@ -129,55 +131,44 @@ export const Dashboard = () => {
         return rows;
     };
 
-    const handleClickOpen = () => {
+    const handleClickOpenForm = () => {
         setOpen(true);
     };
 
-    const handleClose = () => {
+    const handleCloseForm = () => {
         setOpen(false);
+    };
+
+    const handleClickOpenScann = () => {
+        setOpen2(true);
+    };
+
+    const handleCloseScann = () => {
+        setOpen2(false);
     };
 
     return (
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <DialogFormSmall
                 open={open}
-                handleClose={handleClose}
+                handleClose={handleCloseForm}
+            />
+            <ScannerDialog
+                open={open2}
+                handleClose={handleCloseScann}
             />
             <Grid container spacing={3}>
-                {/* Chart */}
-                {/* <Grid item xs={12} md={8} lg={9}>
-                                <Paper
-                                    sx={{
-                                        p: 2,
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        height: 240,
-                                    }}
-                                >
-                                    <Chart />
-                                </Paper>
-                            </Grid> */}
-                {/* Recent Deposits */}
-                {/* <Grid item xs={12} md={4} lg={3}>
-                                <Paper
-                                    sx={{
-                                        p: 2,
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        height: 240,
-                                    }}
-                                >
-                                    <Deposits />
-                                </Paper>
-                            </Grid> */}
-                {/* Recent Orders */}
+                {/* Table */}
                 <Grid item xs={12}>
                     <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                         {/* Buttons */}
                         <Grid sx={{ mt: 3, mb: 3, width: '95%' }}>
                             <Grid item xs={12}>
-                                <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+                                <Button variant="outlined" color="primary" onClick={handleClickOpenForm}>
                                     Create new order
+                                </Button>
+                                <Button sx={{ ml: 2 }} variant="outlined" color="red-audi" onClick={handleClickOpenScann}>
+                                    Scann part number
                                 </Button>
                             </Grid>
                         </Grid>
@@ -189,6 +180,19 @@ export const Dashboard = () => {
                                 onRowDoubleClick={({ id }) => navigate(`/ult-detail/${id.split('-')[0]}`)}
                             />
                         </div>
+                    </Paper>
+                </Grid>
+                {/* Chart */}
+                <Grid item xs={12}>
+                    <Paper
+                        sx={{
+                            p: 2,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            height: 340,
+                        }}
+                    >
+                        <Chart orders={orders} />
                     </Paper>
                 </Grid>
             </Grid>

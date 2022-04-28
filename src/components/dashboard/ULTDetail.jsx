@@ -10,7 +10,7 @@ import { Typography } from '@mui/material';
 export const ULTDetail = () => {
     const { ultId } = useParams();
     const dispatch = useDispatch();
-    dispatch(setCurrentPage('Detail'));
+    // dispatch(setCurrentPage('Detail'));
     const ult = ULTS.find((item) => String(ultId) === item['Part Number']);
 
     const isEmpty = (text) => text?.length > 0 ? text : 'No disponible';
