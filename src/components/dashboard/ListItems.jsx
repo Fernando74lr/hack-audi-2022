@@ -5,31 +5,39 @@ import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import AssignmentIcon from '@mui/icons-material/Assignment';
-import AddIcon from '@mui/icons-material/Add';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-export const mainListItems = (
-    <React.Fragment>
-        <ListItemButton
-            component={Link}
-            to="/dashboard"
-        >
-            <ListItemIcon>
-                <DashboardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Dashboard" />
-        </ListItemButton>
-        {/* <ListItemButton
-            component={Link}
-            to="/new-item"
-        >
-            <ListItemIcon>
-                <AddIcon />
-            </ListItemIcon>
-            <ListItemText primary="New item" />
-        </ListItemButton> */}
-    </React.Fragment>
-);
+export const MainListItems = () => {
+    const { user } = useSelector(state => state);
+    return (
+        <React.Fragment>
+            <ListItemButton
+                component={Link}
+                to="/dashboard"
+            >
+                <ListItemIcon>
+                    <DashboardIcon />
+                </ListItemIcon>
+                <ListItemText primary="Dashboard" />
+            </ListItemButton>
+            {
+                (user.userType === "3") && (
+                    <ListItemButton
+                        component={Link}
+                        to="/profiles-management"
+                    >
+                        <ListItemIcon>
+                            <PeopleAltIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Manage profiles" />
+                    </ListItemButton>
+                )
+            }
+        </React.Fragment>
+    );
+};
 
 export const secondaryListItems = (
     <React.Fragment>

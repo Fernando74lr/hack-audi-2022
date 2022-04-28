@@ -7,7 +7,6 @@ import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCurrentPage } from '../../actions/page';
 import { useEffect, useState } from 'react';
 import { Button } from '@mui/material';
 import { DialogFormSmall } from '../forms/DialogFormSmall';
@@ -30,42 +29,42 @@ function Copyright(props) {
 }
 
 const columns = [
-    { field: 'col1', headerName: 'Part Number', width: 150 },
-    { field: 'col2', headerName: 'PN with Index', width: 150 },
-    { field: 'col3', headerName: 'Description', width: 150 },
-    { field: 'col4', headerName: 'Pieces / Car', width: 150 },
-    { field: 'col5', headerName: 'EBR', width: 150 },
-    { field: 'col6', headerName: 'Cars / Day', width: 150 },
-    { field: 'col7', headerName: 'DUNS', width: 150 },
-    { field: 'col8', headerName: 'Supplier', width: 150 },
-    { field: 'col9', headerName: 'Land', width: 150 },
-    { field: 'col10', headerName: 'Zip Code', width: 150 },
-    { field: 'col11', headerName: 'City', width: 150 },
-    { field: 'col12', headerName: 'LT Type / Project', width: 150 },
-    { field: 'col13', headerName: 'LT', width: 150 },
-    { field: 'col14', headerName: 'QTY KLT / SLT per Pallet', width: 150 },
-    { field: 'col15', headerName: 'QTY PN per Container', width: 150 },
-    { field: 'col16', headerName: 'Containers needed considering Pzs/Car, EBR & Cars/Day', width: 150 },
-    { field: 'col17', headerName: 'Gebinde', width: 150 },
-    { field: 'col18', headerName: 'PN per Pallet', width: 150 },
-    { field: 'col19', headerName: 'Pallet', width: 150 },
-    { field: 'col20', headerName: 'Top', width: 150 },
-    { field: 'col21', headerName: 'Subzone', width: 150 },
-    { field: 'col22', headerName: 'FTL / LTL', width: 150 },
-    { field: 'col23', headerName: 'Pick up Frequency (each X day)', width: 150 },
-    { field: 'col24', headerName: 'Transport (Vollgut)', width: 150 },
-    { field: 'col25', headerName: 'Transport (Leergut)', width: 150 },
-    { field: 'col26', headerName: 'Supplier', width: 150 },
-    { field: 'col27', headerName: 'Inhouse', width: 150 },
-    { field: 'col28', headerName: 'Trailer Yard', width: 150 },
-    { field: 'col29', headerName: 'WH (Vollgut)', width: 150 },
-    { field: 'col30', headerName: 'WH (Leergut)', width: 150 },
-    { field: 'col31', headerName: 'ULT', width: 150 },
-    { field: 'col32', headerName: 'Containers Soll', width: 150 },
-    { field: 'col33', headerName: 'Containers Considering Gebinde Round Up', width: 150 },
-    { field: 'col34', headerName: 'Gebinden (Pallets + Tops)', width: 150 },
-    { field: 'col35', headerName: 'Total Gebinden', width: 150 },
-    { field: 'col36', headerName: 'Total Containers', width: 150 },
+    { field: 'col1', headerName: 'Part Number', width: 150, align: 'center' },
+    { field: 'col2', headerName: 'PN with Index', width: 150, align: 'center' },
+    { field: 'col3', headerName: 'Description', width: 150, align: 'center' },
+    { field: 'col4', headerName: 'Pieces / Car', width: 150, align: 'center' },
+    { field: 'col5', headerName: 'EBR', width: 150, align: 'center' },
+    { field: 'col6', headerName: 'Cars / Day', width: 150, align: 'center' },
+    { field: 'col7', headerName: 'DUNS', width: 150, align: 'center' },
+    { field: 'col8', headerName: 'Supplier', width: 150, align: 'center' },
+    { field: 'col9', headerName: 'Land', width: 150, align: 'center' },
+    { field: 'col10', headerName: 'Zip Code', width: 150, align: 'center' },
+    { field: 'col11', headerName: 'City', width: 150, align: 'center' },
+    { field: 'col12', headerName: 'LT Type / Project', width: 150, align: 'center' },
+    { field: 'col13', headerName: 'LT', width: 150, align: 'center' },
+    { field: 'col14', headerName: 'QTY KLT / SLT per Pallet', width: 150, align: 'center' },
+    { field: 'col15', headerName: 'QTY PN per Container', width: 150, align: 'center' },
+    { field: 'col16', headerName: 'Containers needed considering Pzs/Car, EBR & Cars/Day', width: 150, align: 'center' },
+    { field: 'col17', headerName: 'Gebinde', width: 150, align: 'center' },
+    { field: 'col18', headerName: 'PN per Pallet', width: 150, align: 'center' },
+    { field: 'col19', headerName: 'Pallet', width: 150, align: 'center' },
+    { field: 'col20', headerName: 'Top', width: 150, align: 'center' },
+    { field: 'col21', headerName: 'Subzone', width: 150, align: 'center' },
+    { field: 'col22', headerName: 'FTL / LTL', width: 150, align: 'center' },
+    { field: 'col23', headerName: 'Pick up Frequency (each X day)', width: 150, align: 'center' },
+    { field: 'col24', headerName: 'Transport (Vollgut)', width: 150, align: 'center' },
+    { field: 'col25', headerName: 'Transport (Leergut)', width: 150, align: 'center' },
+    { field: 'col26', headerName: 'Supplier', width: 150, align: 'center' },
+    { field: 'col27', headerName: 'Inhouse', width: 150, align: 'center' },
+    { field: 'col28', headerName: 'Trailer Yard', width: 150, align: 'center' },
+    { field: 'col29', headerName: 'WH (Vollgut)', width: 150, align: 'center' },
+    { field: 'col30', headerName: 'WH (Leergut)', width: 150, align: 'center' },
+    { field: 'col31', headerName: 'ULT', width: 150, align: 'center' },
+    { field: 'col32', headerName: 'Containers Soll', width: 150, align: 'center' },
+    { field: 'col33', headerName: 'Containers Considering Gebinde Round Up', width: 150, align: 'center' },
+    { field: 'col34', headerName: 'Gebinden (Pallets + Tops)', width: 150, align: 'center' },
+    { field: 'col35', headerName: 'Total Gebinden', width: 150, align: 'center' },
+    { field: 'col36', headerName: 'Total Containers', width: 150, align: 'center' },
 
 ];
 
@@ -165,10 +164,10 @@ export const Dashboard = () => {
                         <Grid sx={{ mt: 3, mb: 3, width: '95%' }}>
                             <Grid item xs={12}>
                                 <Button variant="outlined" color="primary" onClick={handleClickOpenForm}>
-                                    Create new order
+                                    Create new register
                                 </Button>
                                 <Button sx={{ ml: 2 }} variant="outlined" color="red-audi" onClick={handleClickOpenScann}>
-                                    Scann part number
+                                    Scan part number
                                 </Button>
                             </Grid>
                         </Grid>

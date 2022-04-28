@@ -1,4 +1,4 @@
-import { doc, setDoc, getDoc } from "@firebase/firestore";
+import { doc, setDoc, getDoc, collection, getDocs, query, updateDoc } from "@firebase/firestore";
 import { Timestamp } from "firebase/firestore";
 import { db } from "../firebase/firebase-config";
 import { cleanMessage } from "../helpers/helpers";
@@ -20,7 +20,7 @@ export const createUser = (uid, name, email) => {
             uid: uid,
             name: name,
             email: email,
-            userType: 0, // 0: full access
+            userType: "2", // 3: full access
             created: Timestamp.fromDate(new Date())
         };
 
@@ -40,7 +40,7 @@ export const getUserInfo = (uid) => {
         const docRef = doc(db, 'users', uid);
         getDoc(docRef)
             .then((user) => {
-                dispatch(setUser({ uid: uid, data: user.data() }));
+                dispatch(setUser({ uid: uid, ...user.data() }));
             })
             .catch((error) => {
                 console.log(error);
@@ -48,3 +48,25 @@ export const getUserInfo = (uid) => {
             })
     };
 };
+
+export const getAllUsers = async () => {
+    const userRef = collection(db, "users");
+    const q = query(userRef);
+    const querySnapshot = await getDocs(q);
+    const users = [];
+    querySnapshot.forEach((doc) => {
+        users.push({ uid: doc.id, ...doc.data() });
+    });
+    return users;
+};
+
+export const updateUserType = (uid, data) => {
+    return () => {
+        const dbRef = doc(db, "users", `${uid}`);
+
+        updateDoc(dbRef, { userType: data })
+            .then(() => {
+                toastSW('success', 'User updated successfully!');
+            })
+    }
+}

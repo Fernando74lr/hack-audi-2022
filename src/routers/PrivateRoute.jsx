@@ -13,7 +13,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar from '@mui/material/AppBar';
 import { useState } from "react";
-import { mainListItems } from "../components/dashboard/ListItems";
+import { MainListItems } from "../components/dashboard/ListItems";
 import { useDispatch, useSelector } from "react-redux";
 import { startLogout } from "../actions/auth";
 import audiLogoImg from '../assets/img/auth/audi-logo-sidebar.jpg'
@@ -155,7 +155,7 @@ export const PrivateRoute = ({ isAuthenticated }) => {
                     </Toolbar>
                     <Divider />
                     <List component="nav">
-                        {mainListItems}
+                        <MainListItems />
                         {/* <Divider sx={{ my: 1 }} />
                         {secondaryListItems} */}
                     </List>

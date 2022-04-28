@@ -20,3 +20,8 @@
 .fw {
   width: 100%;
 }
+
+.MuiDataGrid-columnHeaderTitleContainer {
+  display: flex;
+  justify-content: center;
+}

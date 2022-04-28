@@ -2,11 +2,10 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import { ULTS } from '../../helpers/ults';
 import { useDispatch } from 'react-redux';
-import { setCurrentPage } from '../../actions/page';
 import { Alert, AlertTitle, Autocomplete, Button, Divider, TextField } from '@mui/material';
 import { useState } from 'react';
 import { ZIPS } from '../../helpers/zips';
-// import { SUBZONES } from '../../helpers/subzones';
+import { SUBZONES } from '../../helpers/subzones';
 import { toastSW } from '../../helpers/sweetAlert2';
 import { createOrder, getOrders } from '../../actions/order';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
@@ -45,9 +44,9 @@ export const FormItem = () => {
     };
 
     const getFTLOrLTL = (subzone) => {
-        // const data = SUBZONES.find((item) => item["Subzone"] === subzone);
-        // return (Math.random() === 0) ? { key: "FTL", value: data.FTL } : { key: "LTL", value: data.LTL };
-        return { key: "FTL", value: 0.7 };
+        const data = SUBZONES.find((item) => item["Subzone"] === subzone);
+        return (Math.random() === 0) ? { key: "FTL", value: data.FTL } : { key: "LTL", value: data.LTL };
+        // return { key: "FTL", value: 0.7 };
     };
 
     const getTotalGebinden = (gebinden) => {
@@ -87,24 +86,24 @@ export const FormItem = () => {
         const newOrder = {
             partNumber: partNumber,
             pnWithIndex: partNumber,
-            description: '',
+            description: 'HALTER',
             piecesPerCar: Number(piecesPerCar),
             ebr: ebr,
             carsPerDay: Number(carsPerDay),
-            duns: '',
-            supplierText: '',
-            land: '',
+            duns: 816843914,
+            supplierText: 'Allgaier',
+            land: 'MX',
             zipCode: zip,
-            city: '',
-            ltTypePerProject: '',
-            lt: '',
+            city: 'Puebla',
+            ltTypePerProject: 'Universal',
+            lt: 568839,
             kltPerSlt: kltPerSlt,
             pnPerContainer: Number(pnPerContainer),
             containersNeeded: containersNeeded,
-            gebinde: '',
+            gebinde: 'GT5368',
             pnPerPallet: Number(kltPerSlt * pnPerContainer),
-            pallet: '',
-            top: '',
+            pallet: 568392,
+            top: 567294,
             subzone: zipCode.Zone,
             FTLOrLTL: FTLOrLTL.key,
             pickUpFrequency: pickUpFrequency,

@@ -14,6 +14,7 @@ import { Dashboard } from "../components/dashboard/Dashboard";
 import { ULTDetail } from "../components/dashboard/ULTDetail";
 import { FormItem } from "../components/forms/FormItem";
 import { getUserInfo } from "../actions/user";
+import { TableProfiles } from "../components/dashboard/TableProfiles";
 
 export const AppRouter = () => {
 	const dispatch = useDispatch();
@@ -54,6 +55,7 @@ export const AppRouter = () => {
 						<Route exact path="/test" element={<Test />} />
 						<Route exact path="/new-item" element={<FormItem />} />
 						<Route exact path="/ult-detail/:ultId" element={<ULTDetail />} />
+						<Route exact path="/profiles-management" element={<TableProfiles />} />
 						<Route path="*" element={<Navigate to="/" />} />
 					</Route>
 
